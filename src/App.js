@@ -8,7 +8,7 @@ function App() {
 
     <div className="port-container">
       <div className="port-video">
-      <video src={"/videos/Pentagon.mp4"} autoPlay muted loop ></video>
+      <video src={"https://YooUisun.github.io/web-portfolio/videos/Pentagon.mp4"} autoPlay muted loop ></video>
       </div>
       <div className="port-info">
         <h3>주제 : 어쩌고</h3>
