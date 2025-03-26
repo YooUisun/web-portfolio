@@ -4,20 +4,19 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>유의선 Portfolio</h1>
+
+    <div className="port-container">
+      <div className="port-video">
+      <video src={"/videos/Pentagon.mp4"} autoPlay muted loop ></video>
+      </div>
+      <div className="port-info">
+        <h3>주제 : 어쩌고</h3>
+        <p>일정 : 어쩌고</p>
+        <p>사용기술 : 어쩌고</p>
+        <p>설명 : 어쩌고</p>
+      </div>
+    </div>
     </div>
   );
 }
