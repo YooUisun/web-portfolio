@@ -10,18 +10,18 @@ function App() {
       video: 'https://YooUisun.github.io/web-portfolio/videos/Pentagon.mp4',
     },
     {
-      title: 'Hexagon Project',
+      title: '떠나볼까 여기어때 clone 프로젝트',
       date: '2025.03.20 ~ 03.30',
       tech: 'Vue, Sass, Firebase',
       desc: '두 번째 프로젝트 설명입니다.',
       video: 'https://YooUisun.github.io/web-portfolio/videos/Hexagon.mp4',
     },
     {
-      title: 'Circle Project',
+      title: 'JUVO',
       date: '2025.03.10 ~ 03.18',
       tech: 'HTML, CSS, JavaScript',
       desc: '세 번째 프로젝트 설명입니다.',
-      video: 'https://YooUisun.github.io/web-portfolio/videos/JUVO.mp4'
+      video: '/videos/JUVO.mp4',  // 경로를 상대경로로 수정
     },
   ];
 
