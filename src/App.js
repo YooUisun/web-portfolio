@@ -21,7 +21,7 @@ function App() {
       date: '2025.03.10 ~ 03.18',
       tech: 'HTML, CSS, JavaScript',
       desc: '세 번째 프로젝트 설명입니다.',
-      video: 'https://YooUisun.github.io/web-portfolio/videos/Circle.mp4',
+      video: 'https://YooUisun.github.io/web-portfolio/videos/JUVO.mp4'
     },
   ];
 
