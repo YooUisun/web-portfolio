@@ -14,7 +14,7 @@ function App() {
       date: '2025.03.20 ~ 03.30',
       tech: 'Vue, Sass, Firebase',
       desc: '두 번째 프로젝트 설명입니다.',
-      video: 'https://YooUisun.github.io/web-portfolio/videos/Hexagon.mp4',
+      video: 'https://YooUisun.github.io/web-portfolio/videos/SecondProject.mp4',
     },
     {
       title: 'JUVO',
