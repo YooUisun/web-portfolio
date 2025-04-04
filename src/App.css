@@ -1,49 +1,243 @@
-.App {
-  text-align: center;
-  padding: 40px;
-  font-family: 'Pretendard', sans-serif;
+/* Reset 및 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.port-container {
+body {
+  background: #fafafa;
+  font-family: 'Pretendard', sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+.App {
+  padding: 80px 20px;
+  min-height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.App h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+}
+
+/* 포트폴리오 컨테이너 */
+.port-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
   gap: 30px;
-  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
+/* 포트폴리오 카드 */
 .port-card {
+  position: relative;
   display: flex;
-  max-width: 800px;
+  width: 100%;
   background: #fff;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  border-radius: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: transform 0.3s;
+  transition: all 0.3s ease;
+  z-index: 1;
 }
 
-.port-card:hover {
-  transform: scale(1.02);
+.port-card.hovered {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+/* 호버되지 않은 카드에만 어두운 효과 적용 */
+.port-card.not-hovered {
+  filter: brightness(0.6);
+  transition: filter 0.3s ease;
+}
+
+/* 비디오 스타일 */
+.port-video {
+  flex-shrink: 0;
 }
 
 .port-video video {
-  width: 300px;
-  height: 200px;
+  width: 280px;
+  height: 180px;
   object-fit: cover;
+  transition: filter 0.3s ease;
 }
 
+.port-card.hovered .port-video video {
+  filter: brightness(1.05) contrast(1.05);
+}
+
+/* 정보 영역 */
 .port-info {
-  text-align: left;
   padding: 20px;
+  text-align: left;
   flex: 1;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .port-info h3 {
-  margin: 0 0 10px;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
   color: #222;
+  font-weight: 700;
 }
 
-.port-info p {
-  margin: 4px 0;
-  font-size: 14px;
+.port-info .date {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.port-info .desc {
+  font-size: 1rem;
   color: #444;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.port-info .tech {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* 링크 컨테이너 */
+.links {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  gap: 12px;
+}
+
+/* GitHub 링크 스타일 */
+.github-link {
+  transition: transform 0.3s ease;
+}
+
+.github-icon {
+  width: 28px;
+  height: 28px;
+  filter: grayscale(30%) opacity(0.7);
+  transition: all 0.3s ease;
+}
+
+.github-link:hover .github-icon {
+  filter: grayscale(0%) opacity(1);
+  transform: scale(1.15);
+}
+
+/* 배포 링크 스타일 */
+.deploy-link {
+  transition: transform 0.3s ease;
+}
+
+.deploy-icon {
+  width: 28px;
+  height: 28px;
+  filter: grayscale(30%) opacity(0.7);
+  transition: all 0.3s ease;
+}
+
+.deploy-link:hover .deploy-icon {
+  filter: grayscale(0%) opacity(1);
+  transform: scale(1.15);
+}
+
+/* Footer 스타일 */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  margin-top: 60px;
+  z-index: 1; /* Footer는 항상 기본 계층에 고정 */
+}
+
+.footer h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.footer p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.footer .email-link {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer .email-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .port-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .port-card {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .port-video video {
+    width: 100%;
+    height: 200px;
+  }
+
+  .App h1 {
+    font-size: 2.2rem;
+  }
+
+  .port-info h3 {
+    font-size: 1.4rem;
+  }
+
+  .links {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .footer {
+    padding: 30px 15px;
+  }
+
+  .footer h2 {
+    font-size: 1.3rem;
+  }
+
+  .footer p {
+    font-size: 0.9rem;
+  }
 }
