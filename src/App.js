@@ -21,7 +21,7 @@ function App() {
       date: '2025.03.10 ~ 03.18',
       tech: 'HTML, CSS, JavaScript',
       desc: '세 번째 프로젝트 설명입니다.',
-      video: '/videos/JUVO.mp4',  // 경로를 상대경로로 수정
+      video: '/videos/Juvo.mp4',  // 경로를 상대경로로 수정
     },
   ];
 
