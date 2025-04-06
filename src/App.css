@@ -1,4 +1,4 @@
-/* Reset 및 기본 스타일 */
+/* -------------------- 기본 Reset 및 전역 스타일 -------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -12,17 +12,21 @@ body {
   line-height: 1.6;
 }
 
+/* -------------------- App 전체 레이아웃 -------------------- */
 .App {
-  padding: 80px 20px;
   min-height: 100vh;
-  position: relative;
+  padding: 80px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
+/* -------------------- 헤더 & 타이틀 -------------------- */
 header {
-  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 60px;
 }
 
@@ -30,10 +34,107 @@ header {
   font-size: 2.8rem;
   font-weight: 800;
   color: #1a1a1a;
+  text-align: center;
   letter-spacing: -0.5px;
+  flex-grow: 1;
 }
 
-/* 포트폴리오 컨테이너 */
+/* 홈 링크 */
+.home-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+.home-link:hover {
+  color: #2c3e50;
+}
+
+/* -------------------- 드롭다운 메뉴 -------------------- */
+.dropdown {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.dropbtn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 100;
+  position: relative;
+}
+
+.menu-icon {
+  width: 24px;
+  height: 2px;
+  background: #333;
+  position: relative;
+  display: block;
+  transition: background 0.3s ease;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.menu-icon::before { top: -8px; }
+.menu-icon::after  { top:  8px; }
+
+.dropbtn:hover .menu-icon,
+.dropbtn:focus .menu-icon,
+.dropbtn:hover .menu-icon::before,
+.dropbtn:focus .menu-icon::before,
+.dropbtn:hover .menu-icon::after,
+.dropbtn:focus .menu-icon::after {
+  background: #2c3e50;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  padding: 8px 0;
+  margin-top: 8px;
+  min-width: 140px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+}
+
+.dropdown-content.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-content a {
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.dropdown-content a:hover {
+  background: #f0f0f0;
+  color: #2c3e50;
+}
+
+/* -------------------- 포트폴리오 카드 전체 레이아웃 -------------------- */
 .port-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
@@ -43,86 +144,79 @@ header {
   padding: 0 20px;
 }
 
-/* 포트폴리오 카드 */
 .port-card {
-  position: relative;
   display: flex;
   width: 100%;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: all 0.3s ease;
-  z-index: 1;
+  will-change: transform, box-shadow;
+  position: relative;
 }
 
+/* -------------------- 카드 호버 애니메이션 -------------------- */
 .port-card.hovered {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  z-index: 10;
+  z-index: 5;
+  animation: hoverBounceIn 0.5s forwards;
 }
-
-/* 호버되지 않은 카드에만 어두운 효과 적용 */
 .port-card.not-hovered {
-  filter: brightness(0.6);
-  transition: filter 0.3s ease;
+  animation: hoverBounceOut 0.4s forwards;
 }
 
-/* 비디오 스타일 */
-.port-video {
-  flex-shrink: 0;
+@keyframes hoverBounceIn {
+  0%   { transform: translateY(0) scale(1); }
+  60%  { transform: translateY(-18px) scale(1.04); }
+  100% { transform: translateY(-12px) scale(1.02); }
 }
 
+@keyframes hoverBounceOut {
+  0%   { transform: translateY(-12px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* -------------------- 카드 내부 요소 -------------------- */
+/* 비디오 */
 .port-video video {
   width: 280px;
   height: 180px;
   object-fit: cover;
   transition: filter 0.3s ease;
 }
-
 .port-card.hovered .port-video video {
   filter: brightness(1.05) contrast(1.05);
 }
 
-/* 정보 영역 */
+/* 정보 텍스트 */
 .port-info {
   padding: 20px;
-  text-align: left;
-  flex: 1;
-  background: #fff;
-  position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  background: #fff;
 }
-
 .port-info h3 {
   font-size: 1.6rem;
-  margin-bottom: 8px;
   color: #222;
-  font-weight: 700;
+  margin-bottom: 8px;
 }
-
 .port-info .date {
   font-size: 0.9rem;
   color: #777;
   margin-bottom: 6px;
 }
-
 .port-info .desc {
   font-size: 1rem;
   color: #444;
   margin-bottom: 10px;
-  font-weight: 500;
 }
-
 .port-info .tech {
   font-size: 0.85rem;
   color: #666;
   margin-bottom: 20px;
-  line-height: 1.4;
 }
 
-/* 링크 컨테이너 */
+/* 링크 아이콘 */
 .links {
   position: absolute;
   bottom: 15px;
@@ -130,76 +224,47 @@ header {
   display: flex;
   gap: 12px;
 }
-
-/* GitHub 링크 스타일 */
-.github-link {
-  transition: transform 0.3s ease;
-}
-
-.github-icon {
+.github-link img,
+.deploy-link img {
   width: 28px;
   height: 28px;
   filter: grayscale(30%) opacity(0.7);
   transition: all 0.3s ease;
 }
-
-.github-link:hover .github-icon {
-  filter: grayscale(0%) opacity(1);
+.github-link:hover img,
+.deploy-link:hover img {
+  filter: grayscale(0) opacity(1);
   transform: scale(1.15);
 }
 
-/* 배포 링크 스타일 */
-.deploy-link {
-  transition: transform 0.3s ease;
-}
-
-.deploy-icon {
-  width: 28px;
-  height: 28px;
-  filter: grayscale(30%) opacity(0.7);
-  transition: all 0.3s ease;
-}
-
-.deploy-link:hover .deploy-icon {
-  filter: grayscale(0%) opacity(1);
-  transform: scale(1.15);
-}
-
-/* Footer 스타일 */
+/* -------------------- 푸터 -------------------- */
 .footer {
   text-align: center;
   padding: 40px 20px;
   background: #fff;
   border-top: 1px solid #eee;
   margin-top: 60px;
-  z-index: 1; /* Footer는 항상 기본 계층에 고정 */
 }
-
 .footer h2 {
   font-size: 1.5rem;
-  font-weight: 700;
   color: #222;
   margin-bottom: 10px;
 }
-
 .footer p {
   font-size: 1rem;
   color: #555;
   margin: 5px 0;
 }
-
-.footer .email-link {
-  color: #007bff;
+.email-link {
+  color: #2c3e50;
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
-.footer .email-link:hover {
-  color: #0056b3;
-  text-decoration: underline;
+.email-link:hover {
+  color: #e74c3c;
 }
 
-/* 반응형 디자인 */
+/* -------------------- 반응형 -------------------- */
 @media (max-width: 768px) {
   .port-container {
     grid-template-columns: 1fr;
@@ -208,7 +273,6 @@ header {
 
   .port-card {
     flex-direction: column;
-    max-width: 100%;
   }
 
   .port-video video {
@@ -218,26 +282,5 @@ header {
 
   .App h1 {
     font-size: 2.2rem;
-  }
-
-  .port-info h3 {
-    font-size: 1.4rem;
-  }
-
-  .links {
-    bottom: 10px;
-    right: 10px;
-  }
-
-  .footer {
-    padding: 30px 15px;
-  }
-
-  .footer h2 {
-    font-size: 1.3rem;
-  }
-
-  .footer p {
-    font-size: 0.9rem;
   }
 }

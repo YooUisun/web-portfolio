@@ -1,8 +1,13 @@
+// src/App.js
 import './App.css';
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Blog from './Blog';
+import News from './News';
 
 function App() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const portfolios = [
     {
@@ -32,59 +37,95 @@ function App() {
     },
   ];
 
-  return (
-    <div className="App">
-      <header>
-        <h1>Yoo Uisun's Portfolio</h1>
-      </header>
-      <div className="port-container">
-        {portfolios.map((item, index) => (
-          <div
-            key={index}
-            className={`port-card ${hoveredIndex === index ? 'hovered' : hoveredIndex !== null ? 'not-hovered' : ''}`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="port-video">
-              <video src={item.video} autoPlay muted loop playsInline />
-            </div>
-            <div className="port-info">
-              <h3>{item.title}</h3>
-              <p className="date">{item.date}</p>
-              <p className="desc">{item.desc}</p>
-              <p className="tech">{item.tech}</p>
-              <div className="links">
-                <a href={item.github} target="_blank" rel="noopener noreferrer" className="github-link">
+  const PortfolioHome = () => (
+    <div className="port-container">
+      {portfolios.map((item, index) => (
+        <div
+          key={index}
+          className={`port-card ${hoveredIndex === index ? 'hovered' : hoveredIndex !== null ? 'not-hovered' : ''}`}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          <div className="port-video">
+            <video src={item.video} autoPlay muted loop playsInline />
+          </div>
+          <div className="port-info">
+            <h3>{item.title}</h3>
+            <p className="date">{item.date}</p>
+            <p className="desc">{item.desc}</p>
+            <p className="tech">{item.tech}</p>
+            <div className="links">
+              <a href={item.github} target="_blank" rel="noopener noreferrer" className="github-link">
+                <img
+                  src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                  alt="GitHub"
+                  className="github-icon"
+                />
+              </a>
+              {item.deploy && (
+                <a href={item.deploy} target="_blank" rel="noopener noreferrer" className="deploy-link">
                   <img
-                    src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                    alt="GitHub"
-                    className="github-icon"
+                    src="https://cdn-icons-png.flaticon.com/512/819/819814.png"
+                    alt="Deploy"
+                    className="deploy-icon"
                   />
                 </a>
-                {item.deploy && (
-                  <a href={item.deploy} target="_blank" rel="noopener noreferrer" className="deploy-link">
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/819/819814.png"
-                      alt="Deploy"
-                      className="deploy-icon"
-                    />
-                  </a>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        ))}
-      </div>
-      <footer className="footer">
-        <h2>Contact Me</h2>
-        <p>+82 010 8690 7691</p>
-        <p>
-          <a href="mailto:yoouisun33@naver.com" className="email-link">
-            yoouisun33@naver.com
-          </a>
-        </p>
-      </footer>
+        </div>
+      ))}
     </div>
+  );
+
+  const basename = process.env.NODE_ENV === 'development' ? '/' : '/web-portfolio';
+
+  return (
+    <Router basename={basename}>
+      <div className="App">
+        
+        {/* HEADER */}
+        <header className="header">
+          <Link to="/" className="home-link">
+            <h1>Yoo Uisun's Portfolio</h1>
+          </Link>
+          <div className="dropdown">
+            <button
+              className="dropbtn"
+              onClick={() => setIsDropdownOpen(prev => !prev)}
+              aria-label="메뉴 열기"
+            >
+              <span className="menu-icon"></span>
+            </button>
+            <div className={`dropdown-content ${isDropdownOpen ? 'show' : ''}`}>
+              <Link to="/news">소식</Link>
+              <Link to="/blog">블로그</Link>
+            </div>
+          </div>
+        </header>
+
+        {/* MAIN CONTENT */}
+        <main className="main">
+          <Routes>
+            <Route path="/" element={<PortfolioHome />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/blog" element={<Blog />} />
+          </Routes>
+        </main>
+
+        {/* FOOTER */}
+        <footer className="footer">
+          <h2>Contact Me</h2>
+          <p>+82 010 8690 7691</p>
+          <p>
+            <a href="mailto:yoouisun33@naver.com" className="email-link">
+              yoouisun33@naver.com
+            </a>
+          </p>
+        </footer>
+
+      </div>
+    </Router>
   );
 }
 
