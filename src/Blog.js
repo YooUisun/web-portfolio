@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { ref, onValue, push } from 'firebase/database';
+import { database } from './firebase'; // firebase.js 경로에 맞게 수정
+
 import './Blog.css';
 
 const posts = [
@@ -33,32 +36,42 @@ const Blog = () => {
   const [searchParams] = useSearchParams();
   const postId = parseInt(searchParams.get('p'), 10);
 
-  // 댓글 상태 훅은 컴포넌트 최상단에서 선언
   const storageKey = `comments_post_${postId}`;
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
 
-  // 포스트가 바뀔 때마다 localStorage에서 가져오거나 빈 배열로 초기화
+  // Firebase에서 댓글을 실시간으로 받아오는 코드
   useEffect(() => {
     if (postId) {
-      const saved = localStorage.getItem(storageKey);
-      setComments(saved ? JSON.parse(saved) : []);
-    }
-  }, [storageKey, postId]);
+      const commentsRef = ref(database, `posts/${postId}/comments`);
 
+      // 댓글 데이터가 변경될 때마다 상태 업데이트
+      onValue(commentsRef, (snapshot) => {
+        const data = snapshot.val();
+        const loadedComments = data ? Object.values(data) : [];
+        setComments(loadedComments);
+      });
+    }
+  }, [postId]);
+
+  // 댓글 추가 처리
   const handleSubmit = e => {
     e.preventDefault();
     if (!commentText.trim()) return;
-    const newComments = [
-      ...comments,
-      { text: commentText.trim(), date: new Date().toLocaleString() }
-    ];
-    setComments(newComments);
-    localStorage.setItem(storageKey, JSON.stringify(newComments));
+
+    // 새로운 댓글을 Firebase에 추가
+    const newComment = {
+      text: commentText.trim(),
+      date: new Date().toLocaleString(),
+    };
+
+    const commentsRef = ref(database, `posts/${postId}/comments`);
+    push(commentsRef, newComment); // 댓글을 푸시하여 저장
+
     setCommentText('');
   };
 
-  // 상세 페이지
+  // 포스트가 바뀌었을 때
   if (postId) {
     const post = posts.find(p => p.id === postId);
     if (!post) {
