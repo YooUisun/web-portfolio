@@ -116,6 +116,7 @@ main {
   padding: 20px;
   background: #fff;
   border-top: 1px solid #eee;
+  position: relative;
 }
 
 /* -------------------- 포트폴리오 카드 -------------------- */
@@ -222,6 +223,11 @@ main {
 }
 
 /* -------------------- 반응형 -------------------- */
+@media (max-width: 480px) {
+  .visitor-count {
+    font-size: 0.85rem;
+  }
+}
 @media (max-width: 768px) {
   .App h1 {
     font-size: 1.5rem;
@@ -244,27 +250,16 @@ main {
 
 /* -------------------- 방문자 수 카운트 -------------------- */
 .visitor-count {
-  background: #ff7b7b;
+  background: #887a7a;
   color: #fff;
-  padding: 8px 20px;
+  padding: 6px 16px;
   border-radius: 20px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
-  position: fixed; /* 화면 하단 고정 */
-  bottom: 20px;    /* 푸터 바로 위 */
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;   /* 다른 요소보다 위에 표시 */
-  transition: transform 0.3s ease;
-margin-left: 40%;
-}
-
-/* 포트폴리오 카드에는 이제 방문자 수 표시하지 않음 */
-.port-card {
-  position: relative; /* 방문자 수를 제대로 표시하기 위한 relative */
-}
-
-.port-card:hover .visitor-count {
-  transform: translateX(-50%) scale(1.05);
+  margin-top: 12px;
+  width: fit-content;
+  text-align: center;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: 50px;
 }
