@@ -35,7 +35,6 @@ header {
 }
 .home-link h1 {
   font-size: 2rem;
-  margin: 0;
 }
 
 /* -------------------- 햄버거 버튼 -------------------- */
@@ -139,29 +138,42 @@ main {
 }
 .port-card.hovered {
   z-index: 5;
-  animation: hoverBounceIn 0.5s forwards;
+  animation: cardHoverIn 0.5s forwards;
 }
 .port-card.not-hovered {
-  animation: hoverBounceOut 0.4s forwards;
+  animation: cardHoverOut 0.4s forwards;
 }
-@keyframes hoverBounceIn {
+@keyframes cardHoverIn {
   0%   { transform: translateY(0) scale(1); }
   60%  { transform: translateY(-18px) scale(1.04); }
   100% { transform: translateY(-12px) scale(1.02); }
 }
-@keyframes hoverBounceOut {
+@keyframes cardHoverOut {
   0%   { transform: translateY(-12px) scale(1.02); }
   100% { transform: translateY(0) scale(1); }
 }
-.port-video video {
+
+/* -------------------- 미디어 (비디오/이미지 공통) -------------------- */
+.port-media {
   width: 280px;
   height: 180px;
+  overflow: hidden;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.port-media video,
+.port-media img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: filter 0.3s ease;
 }
-.port-card.hovered .port-video video {
+.port-card.hovered .port-media video,
+.port-card.hovered .port-media img {
   filter: brightness(1.05) contrast(1.05);
 }
+
+/* -------------------- 정보 영역 -------------------- */
 .port-info {
   padding: 20px;
   display: flex;
@@ -182,12 +194,15 @@ main {
   font-size: 1rem;
   color: #444;
   margin-bottom: 10px;
+  white-space: pre-line;
 }
 .port-info .tech {
   font-size: 0.85rem;
   color: #666;
   margin-bottom: 20px;
 }
+
+/* -------------------- 링크 아이콘 -------------------- */
 .links {
   position: absolute;
   bottom: 15px;
@@ -195,22 +210,16 @@ main {
   display: flex;
   gap: 12px;
 }
-.github-link img,
-.deploy-link img {
+.links a img {
   width: 28px;
   height: 28px;
   filter: grayscale(30%) opacity(0.7);
   transition: all 0.3s ease;
 }
-.github-link:hover img,
-.deploy-link:hover img {
+.links a:hover img {
   filter: grayscale(0) opacity(1);
   transform: scale(1.15);
 }
-.desc {
-  white-space: pre-line;
-}
-
 
 /* -------------------- 반응형 -------------------- */
 @media (max-width: 768px) {
@@ -227,7 +236,7 @@ main {
   .port-card {
     flex-direction: column;
   }
-  .port-video video {
+  .port-media {
     width: 100%;
     height: 200px;
   }

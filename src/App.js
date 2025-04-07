@@ -34,6 +34,13 @@ function App() {
       video: 'https://YooUisun.github.io/web-portfolio/videos/JUVO.mp4',
       github: 'https://github.com/YooUisun/JUVO',
     },
+    {
+      title: 'Portfolio',
+      date: '2025.03.21 ~',
+      desc: '개인 포트폴리오 ppt 자료',
+      ppt: 'https://YooUisun.github.io/web-portfolio/ppt/Portfolio.pdf',
+      image: 'https://YooUisun.github.io/web-portfolio/img/Bono.webp'
+    }
   ];
 
   const PortfolioHome = () => (
@@ -47,27 +54,47 @@ function App() {
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          <div className="port-video">
-            <video src={item.video} autoPlay muted loop playsInline />
+          {/* 이미지 or 비디오 */}
+          <div className="port-media">
+            {item.video ? (
+              <video src={item.video} autoPlay muted loop playsInline />
+            ) : item.image ? (
+              <img src={item.image} alt={item.title} className="port-image" />
+            ) : null}
           </div>
+
+          {/* 정보 영역 */}
           <div className="port-info">
             <h3>{item.title}</h3>
             <p className="date">{item.date}</p>
             <p className="desc">{item.desc}</p>
-            <p className="tech">{item.tech}</p>
+            {item.tech && <p className="tech">{item.tech}</p>}
+
+            {/* 링크들 */}
             <div className="links">
-              <a href={item.github} target="_blank" rel="noopener noreferrer" className="github-link">
-                <img
-                  src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                  alt="GitHub"
-                  className="github-icon"
-                />
-              </a>
+              {item.github && (
+                <a href={item.github} target="_blank" rel="noopener noreferrer" className="github-link">
+                  <img
+                    src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                    alt="GitHub"
+                    className="github-icon"
+                  />
+                </a>
+              )}
               {item.deploy && (
                 <a href={item.deploy} target="_blank" rel="noopener noreferrer" className="deploy-link">
                   <img
                     src="https://cdn-icons-png.flaticon.com/512/819/819814.png"
                     alt="Deploy"
+                    className="deploy-icon"
+                  />
+                </a>
+              )}
+              {item.ppt && (
+                <a href={item.ppt} target="_blank" rel="noopener noreferrer" className="ppt-link">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/337/337946.png"
+                    alt="PPT"
                     className="deploy-icon"
                   />
                 </a>
@@ -86,7 +113,6 @@ function App() {
   return (
     <Router basename={basename}>
       <div className="App">
-
         {/* HEADER */}
         <header>
           <Link to="/" className="home-link" onClick={closeMenu}>
@@ -102,10 +128,7 @@ function App() {
         </header>
 
         {/* OVERLAY */}
-        <div
-          className={`menu-overlay ${isMenuOpen ? 'show' : ''}`}
-          onClick={closeMenu}
-        />
+        <div className={`menu-overlay ${isMenuOpen ? 'show' : ''}`} onClick={closeMenu} />
 
         {/* SLIDE-IN MENU */}
         <nav className={`side-menu ${isMenuOpen ? 'show' : ''}`}>
