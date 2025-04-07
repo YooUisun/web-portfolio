@@ -1,5 +1,4 @@
-// src/Blog.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import './Blog.css';
 
@@ -18,7 +17,7 @@ const posts = [
 나는 물론 6개월간의 휴먼 교육센터에서 배우면서 성취감은 많이 느꼈다.
 나의 첫 팀 프로젝트 Pentagon을 완성했을 때,
 그리고 Final Project였던 JUVO를 성공적으로 마무리했을 때
-그리고 멘토 남들로부터 칭찬을 받았을 때 기분이 정말 좋았다.
+그리고 멘토님들로부터 칭찬을 받았을 때 기분이 정말 좋았다.
 
 그 이전에는 아마 고등학교 때 사이클 선수로서 포디엄에 올랐을 때,
 캐나다에서 어학원에서 제일 높은 단계로 졸업을 했을 때,
@@ -32,18 +31,74 @@ const posts = [
 
 const Blog = () => {
   const [searchParams] = useSearchParams();
-  const postId = searchParams.get('p');
+  const postId = parseInt(searchParams.get('p'), 10);
+
+  // 댓글 상태 훅은 컴포넌트 최상단에서 선언
+  const storageKey = `comments_post_${postId}`;
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
+
+  // 포스트가 바뀔 때마다 localStorage에서 가져오거나 빈 배열로 초기화
+  useEffect(() => {
+    if (postId) {
+      const saved = localStorage.getItem(storageKey);
+      setComments(saved ? JSON.parse(saved) : []);
+    }
+  }, [storageKey, postId]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    const newComments = [
+      ...comments,
+      { text: commentText.trim(), date: new Date().toLocaleString() }
+    ];
+    setComments(newComments);
+    localStorage.setItem(storageKey, JSON.stringify(newComments));
+    setCommentText('');
+  };
 
   // 상세 페이지
   if (postId) {
-    const post = posts.find(p => p.id === parseInt(postId, 10));
+    const post = posts.find(p => p.id === postId);
     if (!post) {
-      return <div className="blog-detail"><p>글을 찾을 수 없습니다.</p><Link to="/blog" className="back-link">목록으로 돌아가기</Link></div>;
+      return (
+        <div className="blog-detail">
+          <p>글을 찾을 수 없습니다.</p>
+          <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
+        </div>
+      );
     }
+
     return (
       <div className="blog-detail">
         <h2>{post.title}</h2>
         <div className="content">{post.content}</div>
+
+        {/* 댓글 섹션 */}
+        <div className="comments-section">
+          <h3>댓글</h3>
+          <ul className="comments-list">
+            {comments.length > 0 ? comments.map((c, i) => (
+              <li key={i}>
+                <p>{c.text}</p>
+                <span className="comment-date">{c.date}</span>
+              </li>
+            )) : (
+              <li className="no-comments">아직 댓글이 없습니다.</li>
+            )}
+          </ul>
+          <form onSubmit={handleSubmit} className="comment-form">
+            <textarea
+              value={commentText}
+              onChange={e => setCommentText(e.target.value)}
+              placeholder="댓글을 입력하세요..."
+              required
+            />
+            <button type="submit">댓글 달기</button>
+          </form>
+        </div>
+
         <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
       </div>
     );
