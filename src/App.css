@@ -207,6 +207,10 @@ main {
   filter: grayscale(0) opacity(1);
   transform: scale(1.15);
 }
+.desc {
+  white-space: pre-line;
+}
+
 
 /* -------------------- 반응형 -------------------- */
 @media (max-width: 768px) {

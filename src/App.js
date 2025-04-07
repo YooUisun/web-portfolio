@@ -19,7 +19,7 @@ function App() {
       deploy: 'https://yoouisun.github.io/pentagon/',
     },
     {
-      title: '여기어때 Clone 프로젝트',
+      title: '떠나볼까',
       date: '2025.01.31 ~ 2025.02.19',
       tech: 'HTML, JAVA, JS, React, CSS, Oracle DB, Spring Framework, MyBatis, Git, VS Code, Eclipse',
       desc: '경주지역 여행지 및 식당 추천 사이트',
@@ -30,7 +30,7 @@ function App() {
       title: 'JUVO',
       date: '2025.02.24 ~ 2025.03.20',
       tech: 'HTML, JAVA, JS, React, CSS, Oracle DB, Spring Framework, MyBatis, Git, VS Code, Eclipse, Postman',
-      desc: '주유소/전기차 충전소 정보 제공 및 현재 위치 기준 목적지 추천 시스템',
+      desc: '주유소/전기차 충전소 정보 제공 및\n현재 위치 기준 목적지 추천 시스템',
       video: 'https://YooUisun.github.io/web-portfolio/videos/JUVO.mp4',
       github: 'https://github.com/YooUisun/JUVO',
     },
