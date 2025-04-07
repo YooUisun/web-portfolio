@@ -1,13 +1,12 @@
-// src/App.js
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Blog from './Blog';
 import News from './News';
 
 function App() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const portfolios = [
     {
@@ -42,7 +41,9 @@ function App() {
       {portfolios.map((item, index) => (
         <div
           key={index}
-          className={`port-card ${hoveredIndex === index ? 'hovered' : hoveredIndex !== null ? 'not-hovered' : ''}`}
+          className={`port-card ${
+            hoveredIndex === index ? 'hovered' : hoveredIndex !== null ? 'not-hovered' : ''
+          }`}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -78,34 +79,43 @@ function App() {
     </div>
   );
 
+  const closeMenu = () => setIsMenuOpen(false);
+
   const basename = process.env.NODE_ENV === 'development' ? '/' : '/web-portfolio';
 
   return (
     <Router basename={basename}>
       <div className="App">
-        
+
         {/* HEADER */}
-        <header className="header">
-          <Link to="/" className="home-link">
+        <header>
+          <Link to="/" className="home-link" onClick={closeMenu}>
             <h1>Yoo Uisun's Portfolio</h1>
           </Link>
-          <div className="dropdown">
-            <button
-              className="dropbtn"
-              onClick={() => setIsDropdownOpen(prev => !prev)}
-              aria-label="메뉴 열기"
-            >
-              <span className="menu-icon"></span>
-            </button>
-            <div className={`dropdown-content ${isDropdownOpen ? 'show' : ''}`}>
-              <Link to="/news">소식</Link>
-              <Link to="/blog">블로그</Link>
-            </div>
-          </div>
+          <button
+            className="hamburger-btn"
+            onClick={() => setIsMenuOpen(prev => !prev)}
+            aria-label="메뉴 열기"
+          >
+            <span className="hamburger-icon"></span>
+          </button>
         </header>
 
+        {/* OVERLAY */}
+        <div
+          className={`menu-overlay ${isMenuOpen ? 'show' : ''}`}
+          onClick={closeMenu}
+        />
+
+        {/* SLIDE-IN MENU */}
+        <nav className={`side-menu ${isMenuOpen ? 'show' : ''}`}>
+          <Link to="/" onClick={closeMenu}>홈</Link>
+          <Link to="/news" onClick={closeMenu}>소식</Link>
+          <Link to="/blog" onClick={closeMenu}>블로그</Link>
+        </nav>
+
         {/* MAIN CONTENT */}
-        <main className="main">
+        <main>
           <Routes>
             <Route path="/" element={<PortfolioHome />} />
             <Route path="/news" element={<News />} />
@@ -123,7 +133,6 @@ function App() {
             </a>
           </p>
         </footer>
-
       </div>
     </Router>
   );
