@@ -1,12 +1,25 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Blog from './Blog';
 import News from './News';
+import { incrementVisitorCount, getVisitorCount } from './firebase';
 
 function App() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [visitorCount, setVisitorCount] = useState(0);
+
+  useEffect(() => {
+    incrementVisitorCount();
+
+    const fetchVisitorCount = async () => {
+      const count = await getVisitorCount();
+      setVisitorCount(count);
+    };
+
+    fetchVisitorCount();
+  }, []);
 
   const portfolios = [
     {
@@ -54,6 +67,8 @@ function App() {
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
+          {/* 포트폴리오 카드에는 방문자 수 카운트 표시하지 않음 */}
+
           {/* 이미지 or 비디오 */}
           <div className="port-media">
             {item.video ? (
@@ -113,7 +128,6 @@ function App() {
   return (
     <Router basename={basename}>
       <div className="App">
-        {/* HEADER */}
         <header>
           <Link to="/" className="home-link" onClick={closeMenu}>
             <h1>Yoo Uisun's Portfolio</h1>
@@ -127,17 +141,13 @@ function App() {
           </button>
         </header>
 
-        {/* OVERLAY */}
-        <div className={`menu-overlay ${isMenuOpen ? 'show' : ''}`} onClick={closeMenu} />
-
-        {/* SLIDE-IN MENU */}
+        <div className="menu-overlay" />
         <nav className={`side-menu ${isMenuOpen ? 'show' : ''}`}>
           <Link to="/" onClick={closeMenu}>홈</Link>
           <Link to="/news" onClick={closeMenu}>소식</Link>
           <Link to="/blog" onClick={closeMenu}>블로그</Link>
         </nav>
 
-        {/* MAIN CONTENT */}
         <main>
           <Routes>
             <Route path="/" element={<PortfolioHome />} />
@@ -146,7 +156,7 @@ function App() {
           </Routes>
         </main>
 
-        {/* FOOTER */}
+        {/* FOOTER 추가 */}
         <footer className="footer">
           <h2>Contact Me</h2>
           <p>+82 010 8690 7691</p>
@@ -156,6 +166,11 @@ function App() {
             </a>
           </p>
         </footer>
+
+        {/* 방문자 수 카운트 (푸터 하단에만 표시) */}
+        <div className="visitor-count">
+          방문자 수: {visitorCount}
+        </div>
       </div>
     </Router>
   );

@@ -241,3 +241,30 @@ main {
     height: 200px;
   }
 }
+
+/* -------------------- 방문자 수 카운트 -------------------- */
+.visitor-count {
+  background: #ff7b7b;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: fixed; /* 화면 하단 고정 */
+  bottom: 20px;    /* 푸터 바로 위 */
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;   /* 다른 요소보다 위에 표시 */
+  transition: transform 0.3s ease;
+margin-left: 40%;
+}
+
+/* 포트폴리오 카드에는 이제 방문자 수 표시하지 않음 */
+.port-card {
+  position: relative; /* 방문자 수를 제대로 표시하기 위한 relative */
+}
+
+.port-card:hover .visitor-count {
+  transform: translateX(-50%) scale(1.05);
+}
