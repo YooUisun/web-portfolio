@@ -46,3 +46,20 @@
     transform: translateY(-2px);
   }
   
+  @media (max-width: 768px) {
+    /* 버튼 컨테이너를 세로 정렬하고 중앙 정렬 */
+    .news-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+  
+    /* 버튼 너비를 컨텐츠에 맞춰 자동으로 */
+    .back-link,
+    .blog-link {
+      width: auto;        /* 컨텐츠 폭만큼만 */
+      padding: 8px 16px;  /* 패딩 살짝 줄여서 균일하게 */
+      font-size: 0.9rem;  /* 폰트 크기도 약간 작게 */
+    }
+  }
