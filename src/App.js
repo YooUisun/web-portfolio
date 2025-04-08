@@ -15,19 +15,17 @@ function AppWrapper() {
 }
 
 function App() {
-  const location = useLocation(); // ✅ 훅은 항상 최상단에서 호출
+  const location = useLocation();
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
 
   useEffect(() => {
     incrementVisitorCount();
-
     const fetchVisitorCount = async () => {
       const count = await getVisitorCount();
       setVisitorCount(count);
     };
-
     fetchVisitorCount();
   }, []);
 
@@ -123,6 +121,7 @@ function App() {
           </div>
         </div>
       ))}
+      <div className="visitor-count">총 방문자 수: {visitorCount}</div>
     </div>
   );
 
@@ -171,29 +170,11 @@ function App() {
       path="/news"
       element={
         <motion.div
-          className="page-news fancy-transition"
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >
-          <motion.div
-            className="transition-bg"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            exit={{ scaleY: 0 }}
-            transition={{ duration: 0.5, ease: "circInOut" }}
-            style={{
-              originY: 0,
-              backgroundColor: '#213940',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: -1,
-            }}
-          />
           <News />
         </motion.div>
       }
@@ -202,35 +183,18 @@ function App() {
       path="/blog"
       element={
         <motion.div
-          className="page-blog fancy-transition"
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >
-          <motion.div
-            className="transition-bg"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            exit={{ scaleX: 0 }}
-            transition={{ duration: 0.5, ease: "circInOut" }}
-            style={{
-              originX: 0,
-              backgroundColor: '#213940',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: -1,
-            }}
-          />
           <Blog />
         </motion.div>
       }
     />
   </Routes>
 </AnimatePresence>
+
       </main>
 
       <footer className="footer">
@@ -242,10 +206,6 @@ function App() {
           </a>
         </p>
       </footer>
-
-      <div className="visitor-count">
-        방문자 수: {visitorCount}
-      </div>
     </div>
   );
 }
