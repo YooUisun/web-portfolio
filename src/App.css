@@ -5,10 +5,11 @@
   box-sizing: border-box;
 }
 body {
-  background: #fafafa;
+  background: #213940;
   font-family: 'Pretendard', sans-serif;
-  color: #333;
+  color: #fff;
   line-height: 1.6;
+  height: 100%;
 }
 
 /* -------------------- App 레이아웃 -------------------- */
@@ -16,6 +17,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #213940;
 }
 
 /* -------------------- 헤더 -------------------- */
@@ -25,9 +27,10 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background: #1a2e34;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   z-index: 1001;
+  color: #fff;
 }
 .home-link {
   text-decoration: none;
@@ -35,6 +38,7 @@ header {
 }
 .home-link h1 {
   font-size: 2rem;
+  color: #fff;
 }
 
 /* -------------------- 햄버거 버튼 -------------------- */
@@ -52,7 +56,7 @@ header {
   display: block;
   width: 24px;
   height: 2px;
-  background: #333;
+  background: #fff;
   transition: transform 0.3s ease;
 }
 .hamburger-icon::before {
@@ -84,7 +88,7 @@ header {
   top: 0; right: 0;
   width: 260px;
   height: 100%;
-  background: #fff;
+  background: #1a2e34;
   padding-top: 80px;
   transform: translateX(100%);
   transition: transform 0.3s ease;
@@ -97,25 +101,37 @@ header {
 }
 .side-menu a {
   padding: 16px 24px;
-  color: #333;
+  color: #fff;
   text-decoration: none;
   font-weight: 500;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #3a5a62;
 }
 .side-menu a:hover {
-  background: #f5f5f5;
+  background: #2d4a52;
 }
 
 /* -------------------- MAIN & FOOTER -------------------- */
 main {
   flex: 1;
   padding: 20px;
+  animation: fadeSlideIn 0.7s ease both;
+}
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .footer {
   text-align: center;
   padding: 20px;
-  background: #fff;
-  border-top: 1px solid #eee;
+  background: #1a2e34;
+  border-top: 1px solid #3a5a62;
+  color: #bbb;
   position: relative;
 }
 
@@ -130,12 +146,13 @@ main {
 }
 .port-card {
   display: flex;
-  background: #fff;
+  background: #2d4a52;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
   overflow: hidden;
   position: relative;
   will-change: transform, box-shadow;
+  color: #fff;
 }
 .port-card.hovered {
   z-index: 5;
@@ -183,23 +200,23 @@ main {
 }
 .port-info h3 {
   font-size: 1.6rem;
-  color: #222;
+  color: #fff;
   margin-bottom: 8px;
 }
 .port-info .date {
   font-size: 0.9rem;
-  color: #777;
+  color: #ccc;
   margin-bottom: 6px;
 }
 .port-info .desc {
   font-size: 1rem;
-  color: #444;
+  color: #ddd;
   margin-bottom: 10px;
   white-space: pre-line;
 }
 .port-info .tech {
   font-size: 0.85rem;
-  color: #666;
+  color: #aaa;
   margin-bottom: 20px;
 }
 
@@ -214,12 +231,15 @@ main {
 .links a img {
   width: 28px;
   height: 28px;
-  filter: grayscale(30%) opacity(0.7);
+  filter: brightness(0.8) contrast(1.2) opacity(0.8);
   transition: all 0.3s ease;
 }
 .links a:hover img {
-  filter: grayscale(0) opacity(1);
+  filter: brightness(1.2) contrast(1.3);
   transform: scale(1.15);
+}
+.email-link {
+  color: #fff;
 }
 
 /* -------------------- 반응형 -------------------- */
@@ -250,7 +270,7 @@ main {
 
 /* -------------------- 방문자 수 카운트 -------------------- */
 .visitor-count {
-  background: #887a7a;
+  background: #3c5b64;
   color: #fff;
   padding: 6px 16px;
   border-radius: 20px;

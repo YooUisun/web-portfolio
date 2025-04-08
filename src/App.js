@@ -1,11 +1,21 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Blog from './Blog';
 import News from './News';
 import { incrementVisitorCount, getVisitorCount } from './firebase';
+import { AnimatePresence, motion } from 'framer-motion';
+
+function AppWrapper() {
+  return (
+    <Router basename={process.env.NODE_ENV === 'development' ? '/' : '/web-portfolio'}>
+      <App />
+    </Router>
+  );
+}
 
 function App() {
+  const location = useLocation(); // ✅ 훅은 항상 최상단에서 호출
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
@@ -67,9 +77,6 @@ function App() {
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          {/* 포트폴리오 카드에는 방문자 수 카운트 표시하지 않음 */}
-
-          {/* 이미지 or 비디오 */}
           <div className="port-media">
             {item.video ? (
               <video src={item.video} autoPlay muted loop playsInline />
@@ -78,14 +85,12 @@ function App() {
             ) : null}
           </div>
 
-          {/* 정보 영역 */}
           <div className="port-info">
             <h3>{item.title}</h3>
             <p className="date">{item.date}</p>
             <p className="desc">{item.desc}</p>
             {item.tech && <p className="tech">{item.tech}</p>}
 
-            {/* 링크들 */}
             <div className="links">
               {item.github && (
                 <a href={item.github} target="_blank" rel="noopener noreferrer" className="github-link">
@@ -123,57 +128,126 @@ function App() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  const basename = process.env.NODE_ENV === 'development' ? '/' : '/web-portfolio';
-
   return (
-    <Router basename={basename}>
-      <div className="App">
-        <header>
-          <Link to="/" className="home-link" onClick={closeMenu}>
-            <h1>Yoo Uisun's Portfolio</h1>
-          </Link>
-          <button
-            className="hamburger-btn"
-            onClick={() => setIsMenuOpen(prev => !prev)}
-            aria-label="메뉴 열기"
-          >
-            <span className="hamburger-icon"></span>
-          </button>
-        </header>
+    <div className="App">
+      <header>
+        <Link to="/" className="home-link" onClick={closeMenu}>
+          <h1>Yoo Uisun's Portfolio</h1>
+        </Link>
+        <button
+          className="hamburger-btn"
+          onClick={() => setIsMenuOpen(prev => !prev)}
+          aria-label="메뉴 열기"
+        >
+          <span className="hamburger-icon"></span>
+        </button>
+      </header>
 
-        <div className="menu-overlay" />
-        <nav className={`side-menu ${isMenuOpen ? 'show' : ''}`}>
-          <Link to="/" onClick={closeMenu}>홈</Link>
-          <Link to="/news" onClick={closeMenu}>소식</Link>
-          <Link to="/blog" onClick={closeMenu}>블로그</Link>
-        </nav>
+      <div className="menu-overlay" />
+      <nav className={`side-menu ${isMenuOpen ? 'show' : ''}`}>
+        <Link to="/" onClick={closeMenu}>홈</Link>
+        <Link to="/news" onClick={closeMenu}>소식</Link>
+        <Link to="/blog" onClick={closeMenu}>블로그</Link>
+      </nav>
 
-        <main>
-          <Routes>
-            <Route path="/" element={<PortfolioHome />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/blog" element={<Blog />} />
-          </Routes>
-        </main>
+      <main>
+      <AnimatePresence mode="wait">
+  <Routes location={location} key={location.pathname}>
+    <Route
+      path="/"
+      element={
+        <motion.div
+          className="page-home"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <PortfolioHome />
+        </motion.div>
+      }
+    />
+    <Route
+      path="/news"
+      element={
+        <motion.div
+          className="page-news fancy-transition"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <motion.div
+            className="transition-bg"
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            exit={{ scaleY: 0 }}
+            transition={{ duration: 0.5, ease: "circInOut" }}
+            style={{
+              originY: 0,
+              backgroundColor: '#213940',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: -1,
+            }}
+          />
+          <News />
+        </motion.div>
+      }
+    />
+    <Route
+      path="/blog"
+      element={
+        <motion.div
+          className="page-blog fancy-transition"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <motion.div
+            className="transition-bg"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            exit={{ scaleX: 0 }}
+            transition={{ duration: 0.5, ease: "circInOut" }}
+            style={{
+              originX: 0,
+              backgroundColor: '#213940',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: -1,
+            }}
+          />
+          <Blog />
+        </motion.div>
+      }
+    />
+  </Routes>
+</AnimatePresence>
+      </main>
 
-        {/* FOOTER 추가 */}
-        <footer className="footer">
-          <h2>Contact Me</h2>
-          <p>+82 010 8690 7691</p>
-          <p>
-            <a href="mailto:yoouisun33@naver.com" className="email-link">
-              yoouisun33@naver.com
-            </a>
-          </p>
-        </footer>
+      <footer className="footer">
+        <h2>Contact Me</h2>
+        <p>+82 010 8690 7691</p>
+        <p>
+          <a href="mailto:yoouisun33@naver.com" className="email-link">
+            yoouisun33@naver.com
+          </a>
+        </p>
+      </footer>
 
-        {/* 방문자 수 카운트 (푸터 하단에만 표시) */}
-        <div className="visitor-count">
-          방문자 수: {visitorCount}
-        </div>
+      <div className="visitor-count">
+        방문자 수: {visitorCount}
       </div>
-    </Router>
+    </div>
   );
 }
 
-export default App;
+export default AppWrapper;
