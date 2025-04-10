@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ref, onValue, push } from 'firebase/database';
-import { database } from './firebase'; // firebase.js 경로에 맞게 수정
+import { database } from './firebase'; // 경로 확인
 
+import { motion, AnimatePresence } from 'framer-motion';
 import './Blog.css';
 
 const posts = [
@@ -31,21 +32,16 @@ const posts = [
 파이팅..`,
   },
 ];
-
 const Blog = () => {
   const [searchParams] = useSearchParams();
   const postId = parseInt(searchParams.get('p'), 10);
 
-  const storageKey = `comments_post_${postId}`;
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
 
-  // Firebase에서 댓글을 실시간으로 받아오는 코드
   useEffect(() => {
     if (postId) {
       const commentsRef = ref(database, `posts/${postId}/comments`);
-
-      // 댓글 데이터가 변경될 때마다 상태 업데이트
       onValue(commentsRef, (snapshot) => {
         const data = snapshot.val();
         const loadedComments = data ? Object.values(data) : [];
@@ -54,80 +50,99 @@ const Blog = () => {
     }
   }, [postId]);
 
-  // 댓글 추가 처리
   const handleSubmit = e => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    // 새로운 댓글을 Firebase에 추가
     const newComment = {
       text: commentText.trim(),
       date: new Date().toLocaleString(),
     };
 
     const commentsRef = ref(database, `posts/${postId}/comments`);
-    push(commentsRef, newComment); // 댓글을 푸시하여 저장
+    push(commentsRef, newComment);
 
     setCommentText('');
   };
 
-  // 포스트가 바뀌었을 때
-  if (postId) {
-    const post = posts.find(p => p.id === postId);
-    if (!post) {
-      return (
-        <div className="blog-detail">
-          <p>글을 찾을 수 없습니다.</p>
-          <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
-        </div>
-      );
-    }
-
-    return (
-      <div className="blog-detail">
-        <h2>{post.title}</h2>
-        <div className="content">{post.content}</div>
-
-        {/* 댓글 섹션 */}
-        <div className="comments-section">
-          <h3>댓글</h3>
-          <ul className="comments-list">
-            {comments.length > 0 ? comments.map((c, i) => (
-              <li key={i}>
-                <p>{c.text}</p>
-                <span className="comment-date">{c.date}</span>
-              </li>
-            )) : (
-              <li className="no-comments">아직 댓글이 없습니다.</li>
-            )}
-          </ul>
-          <form onSubmit={handleSubmit} className="comment-form">
-            <textarea
-              value={commentText}
-              onChange={e => setCommentText(e.target.value)}
-              placeholder="댓글을 입력하세요..."
-              required
-            />
-            <button type="submit">댓글 달기</button>
-          </form>
-        </div>
-
-        <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
-      </div>
-    );
-  }
-
-  // 목록 페이지
   return (
-    <div className="blog-list">
-      {posts.map(post => (
-        <div key={post.id} className="post-card">
-          <h3>{post.title}</h3>
-          <p className="excerpt">{post.excerpt}</p>
-          <Link to={`/blog?p=${post.id}`} className="read-more">더보기 →</Link>
-        </div>
-      ))}
-    </div>
+    <AnimatePresence mode="wait">
+      {postId ? (
+        (() => {
+          const post = posts.find(p => p.id === postId);
+          if (!post) {
+            return (
+              <motion.div
+                key="not-found"
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.6 }}
+              >
+                <p>글을 찾을 수 없습니다.</p>
+                <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
+              </motion.div>
+            );
+          }
+
+          return (
+            <motion.div
+              key={`post-${postId}`}
+              className="blog-detail"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2>{post.title}</h2>
+              <div className="content">{post.content}</div>
+
+              <div className="comments-section">
+                <h3>댓글</h3>
+                <ul className="comments-list">
+                  {comments.length > 0 ? comments.map((c, i) => (
+                    <li key={i}>
+                      <p>{c.text}</p>
+                      <span className="comment-date">{c.date}</span>
+                    </li>
+                  )) : (
+                    <li className="no-comments">아직 댓글이 없습니다.</li>
+                  )}
+                </ul>
+                <form onSubmit={handleSubmit} className="comment-form">
+                  <textarea
+                    value={commentText}
+                    onChange={e => setCommentText(e.target.value)}
+                    placeholder="댓글을 입력하세요."
+                    required
+                  />
+                  <button type="submit">댓글 달기</button>
+                </form>
+              </div>
+
+              <Link to="/blog" className="back-link">목록으로 돌아가기</Link>
+            </motion.div>
+          );
+        })()
+      ) : (
+        <motion.div
+          key="blog-list"
+          className="blog-list"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.6 }}
+        >
+          {posts.map(post => (
+            <div key={post.id} className="post-card">
+              <h3>{post.title}</h3>
+              <p className="excerpt">{post.excerpt}</p>
+              <Link to={`/blog?p=${post.id}`} className="read-more">더보기 →</Link>
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
