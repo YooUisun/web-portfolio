@@ -117,7 +117,27 @@ header {
 .side-menu a:hover {
   background: #2d4a52;
 }
-
+.menu-overlay {
+  display: none;
+  /* pointer-events: none; <- 없어도 되지만, 확실히 막고 싶으면 제거하세요 */
+}
+.menu-overlay.show {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10; /* nav보다 낮게 설정하세요 */
+}
+.side-menu {
+  position: fixed;
+  right: -300px; /* 숨겨진 상태 */
+  /* ... */
+  transition: right 0.3s ease;
+  z-index: 20;
+}
+.side-menu.show {
+  right: 0;
+}
 /* -------------------- MAIN & FOOTER -------------------- */
 main {
   flex: 1;
