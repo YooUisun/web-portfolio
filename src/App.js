@@ -42,7 +42,7 @@ function App() {
       title: "Pentagon Project",
       date: "2024.11.29 ~ 2024.12.13",
       tech: "HTML, JS, React, CSS, Git, VS Code",
-      desc: "운동 기록 저장 및 운동 추천 웹사이트",
+      desc: "운동 기록 저장 및 운동 추천 \n웹사이트",
       video: "https://YooUisun.github.io/web-portfolio/videos/Pentagon.mp4",
       github: "https://github.com/YooUisun/pentagon",
       deploy: "https://yoouisun.github.io/pentagon/",
@@ -51,7 +51,7 @@ function App() {
       title: "떠나볼까",
       date: "2025.01.31 ~ 2025.02.19",
       tech: "HTML, JAVA, JS, React, CSS, Oracle DB, Spring Framework, MyBatis, Git, VS Code, Eclipse",
-      desc: "경주지역 여행지 및 식당 추천 사이트",
+      desc: "경주지역 여행지 및 식당 추천 \n사이트",
       video:
         "https://YooUisun.github.io/web-portfolio/videos/SecondProject.mp4",
       github: "https://github.com/YooUisun/Ttonabolkka",
