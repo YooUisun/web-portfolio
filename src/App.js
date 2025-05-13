@@ -69,7 +69,8 @@ function App() {
       date: "2025.03.21 ~",
       desc: "개인 포트폴리오 ppt 자료",
       ppt: "https://YooUisun.github.io/web-portfolio/ppt/Portfolio.pdf",
-      image: "/web-portfolio/img/UISUN.jpg",
+      image: "https://YooUisun.github.io/web-portfolio/img/UISUN.jpg"
+
     },
   ];
 
